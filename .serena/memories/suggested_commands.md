@@ -1,0 +1,5 @@
+- `xed OpenReelStudio.xcodeproj` — open the project in Xcode for running and debugging the app.
+- `xcodebuild clean build -project OpenReelStudio.xcodeproj -scheme OpenReelStudio -destination 'platform=iOS Simulator,name=iPhone 15'` — command-line build targeting the latest iPhone simulator.
+- `xcodebuild test -project OpenReelStudio.xcodeproj -scheme OpenReelStudio -destination 'platform=iOS Simulator,name=iPhone 15'` — run unit tests (uses the new `Testing` package under the hood).
+- `xcodebuild test -project OpenReelStudio.xcodeproj -scheme OpenReelStudioUITests -destination 'platform=iOS Simulator,name=iPhone 15'` — execute the XCTest-based UI + launch tests.
+- Standard macOS developer tooling is available (e.g., `git status`, `ls`, `rg`, `swift run/test`, etc.) for repo management and quick inspections.
