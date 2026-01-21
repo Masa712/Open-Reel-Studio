@@ -10,50 +10,41 @@ import SwiftData
 
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
-    @Query private var items: [Item]
+    private let provider: any VideoProviderProtocol = MockProvider()
 
     var body: some View {
-        NavigationSplitView {
-            List {
-                ForEach(items) { item in
-                    NavigationLink {
-                        Text("Item at \(item.timestamp, format: Date.FormatStyle(date: .numeric, time: .standard))")
-                    } label: {
-                        Text(item.timestamp, format: Date.FormatStyle(date: .numeric, time: .standard))
-                    }
+        TabView {
+            GeneratorView(modelContext: modelContext, provider: provider)
+                .tabItem {
+                    Label("Generate", systemImage: "sparkles")
                 }
-                .onDelete(perform: deleteItems)
-            }
-            .navigationSplitViewColumnWidth(min: 180, ideal: 200)
-            .toolbar {
-                ToolbarItem {
-                    Button(action: addItem) {
-                        Label("Add Item", systemImage: "plus")
-                    }
+
+            GalleryView()
+                .tabItem {
+                    Label("Gallery", systemImage: "rectangle.grid.2x2")
                 }
-            }
-        } detail: {
-            Text("Select an item")
+
+            SettingsView()
+                .tabItem {
+                    Label("Settings", systemImage: "gearshape")
+                }
         }
     }
+}
 
-    private func addItem() {
-        withAnimation {
-            let newItem = Item(timestamp: Date())
-            modelContext.insert(newItem)
-        }
-    }
+private struct PlaceholderView: View {
+    let title: String
+    let systemImage: String
 
-    private func deleteItems(offsets: IndexSet) {
-        withAnimation {
-            for index in offsets {
-                modelContext.delete(items[index])
-            }
+    var body: some View {
+        NavigationStack {
+            ContentUnavailableView(title, systemImage: systemImage)
+                .navigationTitle(title)
         }
     }
 }
 
 #Preview {
     ContentView()
-        .modelContainer(for: Item.self, inMemory: true)
+        .modelContainer(for: GenerationItem.self, inMemory: true)
 }
