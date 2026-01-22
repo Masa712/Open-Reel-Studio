@@ -21,3 +21,6 @@ DerivedData/
 
 # macOS general
 .DS_Store
+
+# Serena
+.serena/

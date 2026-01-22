@@ -1,5 +1,0 @@
-# Style and Conventions
-- Swift 6 + SwiftUI + SwiftData; MVVM + Service Provider; views are struct-based with computed subviews, `@StateObject`/`@Environment`/`@Query`; view models `@MainActor` and `ObservableObject` with `@Published` state.
-- Data persistence via SwiftData `@Model` classes; status strings like "queued"/"processing"/"completed"/"failed"; metadata stored as JSON string.
-- Providers conform to `VideoProviderProtocol` (Sendable); async/await for network and polling; errors surfaced via view model `errorMessage` or thrown.
-- Keychain: service `com.vaddiction.OpenReelStudio`, accounts `api_key_openai`, `api_key_kling_access`, `api_key_kling_secret`, `api_key_google`; KlingProvider derives a JWT (HS256) from Access/Secret and sends `Authorization: Bearer <token>`; BookmarkStore uses security-scoped bookmarks for output folder.
