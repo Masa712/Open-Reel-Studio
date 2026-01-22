@@ -10,8 +10,10 @@ import SwiftData
 
 struct GeneratorView: View {
     @StateObject private var viewModel: GenerationViewModel
+    private let isProviderReady: Bool
 
-    init(modelContext: ModelContext, provider: any VideoProviderProtocol) {
+    init(modelContext: ModelContext, provider: any VideoProviderProtocol, isProviderReady: Bool) {
+        self.isProviderReady = isProviderReady
         _viewModel = StateObject(
             wrappedValue: GenerationViewModel(modelContext: modelContext, provider: provider)
         )
@@ -53,6 +55,11 @@ struct GeneratorView: View {
 
     private var actionSection: some View {
         Section {
+            if !isProviderReady {
+                Label("Kling Access Key / Secret Key が未設定です。Settingsで保存してください。", systemImage: "exclamationmark.triangle")
+                    .foregroundStyle(.orange)
+            }
+
             Button {
                 viewModel.startGeneration()
             } label: {
@@ -85,7 +92,9 @@ struct GeneratorView: View {
     }
 
     private var isGenerateDisabled: Bool {
-        viewModel.isGenerating || viewModel.prompt.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+        viewModel.isGenerating
+            || !isProviderReady
+            || viewModel.prompt.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
     }
 }
 
@@ -96,6 +105,7 @@ struct GeneratorView: View {
 
     return GeneratorView(
         modelContext: container.mainContext,
-        provider: MockProvider()
+        provider: MockProvider(),
+        isProviderReady: true
     )
 }

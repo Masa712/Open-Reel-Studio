@@ -1,1 +1,6 @@
-Before handing off changes: (1) run `xcodebuild test -project OpenReelStudio.xcodeproj -scheme OpenReelStudio -destination 'platform=iOS Simulator,name=iPhone 15'` (and UI tests if you touched UI automation). (2) Verify the SwiftUI view hierarchy still launches in the simulator or Xcode previews when you modify UI/persistence layers. (3) Update any relevant notes (e.g., README, inline comments) when altering models or persistence, so the scaffolding stays comprehensible. (4) Use `git status` to review modified files and keep commits scoped to a single logical change.
+# Task Completion Checklist
+- Run tests: `xcodebuild test -project OpenReelStudio.xcodeproj -scheme OpenReelStudio` (from repo root).
+- If UI or runtime changes: launch via Xcode to verify Generator/Gallery/Settings tabs and SwiftData interactions.
+- Update docs if behavior or requirements change (README.md or docs/).
+- Keep API keys out of source; rely on KeychainHelper/BookmarkStore for secrets and folder bookmarks.
+- No formatter/linter configured; keep Swift style consistent with existing code (SwiftUI idioms, clear naming).

@@ -6,18 +6,21 @@
 //
 
 import Foundation
+import Combine
 
 @MainActor
 final class SettingsViewModel: ObservableObject {
     @Published var openAIKey = ""
-    @Published var klingKey = ""
+    @Published var klingAccessKey = ""
+    @Published var klingSecretKey = ""
     @Published var googleKey = ""
     @Published var outputFolderPath = "未設定"
     @Published var statusMessage: String?
 
     init() {
         openAIKey = KeychainHelper.loadKey(account: "api_key_openai") ?? ""
-        klingKey = KeychainHelper.loadKey(account: "api_key_kling") ?? ""
+        klingAccessKey = KeychainHelper.loadKey(account: "api_key_kling_access") ?? ""
+        klingSecretKey = KeychainHelper.loadKey(account: "api_key_kling_secret") ?? ""
         googleKey = KeychainHelper.loadKey(account: "api_key_google") ?? ""
         outputFolderPath = BookmarkStore.loadOutputFolder()?.path ?? "未設定"
     }
@@ -25,7 +28,8 @@ final class SettingsViewModel: ObservableObject {
     func saveKeys() {
         do {
             try saveKey(openAIKey, account: "api_key_openai")
-            try saveKey(klingKey, account: "api_key_kling")
+            try saveKey(klingAccessKey, account: "api_key_kling_access")
+            try saveKey(klingSecretKey, account: "api_key_kling_secret")
             try saveKey(googleKey, account: "api_key_google")
             statusMessage = "APIキーを保存しました。"
         } catch {
@@ -51,4 +55,3 @@ final class SettingsViewModel: ObservableObject {
         }
     }
 }
-

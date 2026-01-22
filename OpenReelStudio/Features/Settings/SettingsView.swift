@@ -9,8 +9,14 @@ import SwiftUI
 import UniformTypeIdentifiers
 
 struct SettingsView: View {
-    @StateObject private var viewModel = SettingsViewModel()
+    let onKeysUpdated: () -> Void
+    @StateObject private var viewModel: SettingsViewModel
     @State private var isSelectingFolder = false
+
+    init(onKeysUpdated: @escaping () -> Void = {}) {
+        self.onKeysUpdated = onKeysUpdated
+        _viewModel = StateObject(wrappedValue: SettingsViewModel())
+    }
 
     var body: some View {
         NavigationStack {
@@ -35,17 +41,17 @@ struct SettingsView: View {
     private var keySection: some View {
         Section("API Keys") {
             SecureField("OpenAI API Key", text: $viewModel.openAIKey)
-                .textInputAutocapitalization(.never)
                 .disableAutocorrection(true)
-            SecureField("Kling API Key", text: $viewModel.klingKey)
-                .textInputAutocapitalization(.never)
+            SecureField("Kling Access Key", text: $viewModel.klingAccessKey)
+                .disableAutocorrection(true)
+            SecureField("Kling Secret Key", text: $viewModel.klingSecretKey)
                 .disableAutocorrection(true)
             SecureField("Google API Key", text: $viewModel.googleKey)
-                .textInputAutocapitalization(.never)
                 .disableAutocorrection(true)
 
             Button("Save Keys") {
                 viewModel.saveKeys()
+                onKeysUpdated()
             }
         }
     }
@@ -79,4 +85,3 @@ struct SettingsView: View {
 #Preview {
     SettingsView()
 }
-
